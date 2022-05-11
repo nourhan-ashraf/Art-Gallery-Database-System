@@ -3,7 +3,7 @@ CREATE TABLE "Artist" (
 	"username" CHAR(20) NOT NULL,
 	"firstName" CHAR(20) NOT NULL,
 	"lastName" CHAR(20) NOT NULL,
-	"phoneNumber" NUMBER UNIQUE NOT NULL,
+	"phoneNumber" CHAR(11) UNIQUE NOT NULL,
 	"Email" VARCHAR2(255) UNIQUE NOT NULL,
 	constraint ARTIST_PK PRIMARY KEY ("username")
 	)
@@ -14,13 +14,13 @@ CREATE TABLE EXISTS "Customer" (
 	"firstName" CHAR(20) NOT NULL,
 	"lastName" CHAR(20) NOT NULL,
 	"birthDay" DATE NOT NULL,
-	"phoneNumber" NUMBER UNIQUE NOT NULL,
+	"phoneNumber" CHAR(11) UNIQUE NOT NULL,
 	"Email" VARCHAR2(255) UNIQUE NOT NULL,
 	constraint CUSTOMER_PK PRIMARY KEY ("username"));
 
 
 CREATE TABLE "Exhibitions" (
-	"exhibitionID" NUMBER NOT NULL,
+	"exhibitionID" INT NOT NULL,
 	"artistName" CHAR(20) NOT NULL,
 	"exposName" CHAR(20) NOT NULL,
 	"location" CHAR(20) NOT NULL,
@@ -33,7 +33,7 @@ constraint EXHIBITIONS_PK PRIMARY KEY ("exhibitionID"));
 
 
 CREATE TABLE "Artworks" (
-	"artID" NUMBER NOT NULL,
+	"artID" INT NOT NULL,
 	"artistName" CHAR(20) NOT NULL,
 	"artworkName" CHAR(20) NOT NULL,
 	"information" VARCHAR2(255) NOT NULL,
@@ -42,7 +42,7 @@ CREATE TABLE "Artworks" (
 
 
 CREATE TABLE "artworkPayment" (
-	"paymentID" NUMBER NOT NULL,
+	"paymentID" INT NOT NULL,
 	"username" CHAR(20) NOT NULL,
 	"artworkID" NUMBER NOT NULL,
 	"nameOnCard" CHAR(20) NOT NULL,
@@ -55,21 +55,21 @@ CREATE TABLE "artworkPayment" (
 
 
 CREATE TABLE "likes" (
-	"artID" NUMBER NOT NULL,
-	"likesNo." NUMBER NOT NULL);
+	"artID" INT NOT NULL,
+	"likesNo." INT NOT NULL);
 
 
 CREATE TABLE "reviews" (
 	"username" CHAR(20) NOT NULL,
-	"artID" NUMBER NOT NULL,
+	"artID" INT NOT NULL,
 	"review" VARCHAR2(255) NOT NULL);
 
 
 
 CREATE TABLE "exhibitionsPayment" (
-	"exposPaymentID" NUMBER UNIQUE NOT NULL,
-	"username" NUMBER NOT NULL,
-	"exhibitionID" NUMBER NOT NULL,
+	"exposPaymentID" INT UNIQUE NOT NULL,
+	"username" CHAR(20) NOT NULL,
+	"exhibitionID" INT NOT NULL,
 	"nameOnCard" CHAR(20) NOT NULL,
 	"cardNumber" INT NOT NULL,
 	"expiryDate" DATE NOT NULL,
@@ -84,9 +84,6 @@ ALTER TABLE "Artworks" ADD CONSTRAINT "Artworks_fk0" FOREIGN KEY ("artistName") 
 
 ALTER TABLE "artworkPayment" ADD CONSTRAINT "artworkPayment_fk0" FOREIGN KEY ("username") REFERENCES "Customer"("username");
 ALTER TABLE "artworkPayment" ADD CONSTRAINT "artworkPayment_fk1" FOREIGN KEY ("artworkID") REFERENCES "Artworks"("artID");
-
-ALTER TABLE "artist's_artwort" ADD CONSTRAINT "artist's_artwort_fk0" FOREIGN KEY ("username") REFERENCES "Artist"("username");
-ALTER TABLE "artist's_artwort" ADD CONSTRAINT "artist's_artwort_fk1" FOREIGN KEY ("artID") REFERENCES "Artworks"("artID");
 
 ALTER TABLE "likes" ADD CONSTRAINT "likes_fk1" FOREIGN KEY ("artID") REFERENCES "Artworks"("artID");
 
