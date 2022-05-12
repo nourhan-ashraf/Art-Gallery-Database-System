@@ -3,7 +3,7 @@ CREATE TABLE "Artist" (
 	"username" CHAR(20) NOT NULL,
 	"firstName" CHAR(20) NOT NULL,
 	"lastName" CHAR(20) NOT NULL,
-	"phoneNumber" CHAR(11) UNIQUE NOT NULL,
+	"phoneNumber" integer UNIQUE NOT NULL,
 	"Email" VARCHAR2(255) UNIQUE NOT NULL,
 	constraint ARTIST_PK PRIMARY KEY ("username")
 	)
@@ -14,7 +14,7 @@ CREATE TABLE EXISTS "Customer" (
 	"firstName" CHAR(20) NOT NULL,
 	"lastName" CHAR(20) NOT NULL,
 	"birthDay" DATE NOT NULL,
-	"phoneNumber" CHAR(11) UNIQUE NOT NULL,
+	"phoneNumber" integer NOT NULL,
 	"Email" VARCHAR2(255) UNIQUE NOT NULL,
 	constraint CUSTOMER_PK PRIMARY KEY ("username"));
 
