@@ -215,7 +215,7 @@ def Register():
         if var.get() == 1:
             artist(uname,fname,lname,phone,email,cal)
         elif var.get() == 2:
-            customer()
+            customer(uname,fname,lname,phone,email,cal)
 
     formWindow.mainloop()
 
@@ -339,25 +339,213 @@ def exhibition():
                     font=('Arial', 16, 'bold'), command=lambda:confirm()).place(x=350, y=700)
 
 
-def customer():
+def customer(uname,fname,lname,phone,email,cal):
+    u = uname.get()
+    f = fname.get()
+    l = lname.get()
+    p = phone.get()
+    e = email.get()
+
+    cur = db.cursor()
+    cur.execute('insert into "Customer" ("username", "firstName", "lastName", "phoneNumber", "Email") VALUES(:1, :2, :3, :4, :5)', (u, f, l, p, e))
+    db.commit()
+
+    formWindow = tk.Tk()
+    formWindow.title("Customer's options")
+    formWindow.geometry("650x450")
+
+    # likes
+    tk.Button(formWindow, text="Likes",
+              width=10, fg='black', activebackground='#D4234B',activeforeground='white',
+              font=('Arial', 16, 'bold'), command=lambda: likes(uname)).place(x=250, y=100)
+
+    # Reviews
+    tk.Button(formWindow, text="Reviews",
+              width=10, fg='black', activebackground='#FC623D',activeforeground='white',
+              font=('Arial', 16, 'bold'), command=lambda: reviews(uname)).place(x=250, y=200)
+
+    # Payments
+    tk.Button(formWindow, text="Payments",
+              width=10, fg='black', activebackground='#C679A5',activeforeground='white',
+              font=('Arial', 16, 'bold'), command=lambda: payments(uname)).place(x=250, y=300)
+
+def likes(uname):
+    u = uname.get()
+
+    formWindow = tk.Tk()
+    formWindow.title("Artwork likes")
+    formWindow.geometry("750x250")
+
+    tk.Label(formWindow, text="Artwork's ID", width=20, fg='black',
+             font=('Arial', 16, 'bold')).place(x=0, y=80)
+
+    artID = tk.StringVar(formWindow)
+    tk.Entry(formWindow,textvariable=artID, width=30, fg='black',
+             font=('Arial', 16, 'bold')).place(x=250, y=80)
+
+    tk.Button(formWindow, text="Like <3",
+              width=10, fg='black', activebackground='#D4234B',activeforeground='white',
+              font=('Arial', 16, 'bold'), command=lambda: confirm()).place(x=335, y=160)
+
+    cur = db.cursor()
+    cur.execute('insert into "Likes" ("username", "artID") VALUES(:1, :2)', (u,artID))
+    db.commit()
+
+
+def reviews(uname):
+    u = uname.get()
+
+
     formWindow = tk.Tk()
     formWindow.title("Review form")
-    formWindow.geometry("1100x800")
-    tk.Label(formWindow, text="Art work's ID", width=20, fg='black',
-            font=('Arial', 16, 'bold')).place(x=0, y=200)
+    formWindow.geometry("750x350")
 
-    tk.Entry(formWindow,width=40, fg='black',
-            font=('Arial', 16, 'bold')).place(x=250, y=200)
+    tk.Label(formWindow, text="Art work's ID", width=20, fg='black',
+             font=('Arial', 16, 'bold')).place(x=0, y=80)
+
+    artID = tk.StringVar(formWindow)
+    tk.Entry(formWindow, textvariable=artID, width=30, fg='black',
+             font=('Arial', 16, 'bold')).place(x=250, y=80)
 
     tk.Label(formWindow, text="Review", width=20, fg='black',
-            font=('Arial', 16, 'bold')).place(x=0, y=400)
+             font=('Arial', 16, 'bold')).place(x=0, y=180)
 
-    tk.Entry(formWindow,width=40, fg='black',
-                    font=('Arial', 16, 'bold')).place(x=250, y=400)
+    tk.Entry(formWindow, width=30, fg='black',
+             font=('Arial', 16, 'bold')).place(x=250, y=180)
     tk.Button(formWindow, text="submit",
-                    width=10, fg='black',
-                    font=('Arial', 16, 'bold'), command=lambda:confirm()).place(x=450, y=650)
+              width=10, fg='black', activebackground='#FC623D',activeforeground='white',
+              font=('Arial', 16, 'bold'), command=lambda: confirm()).place(x=350, y=270)
 
+    cur = db.cursor()
+    cur.execute('insert into "Likes" ("username", "artID") VALUES(:1, :2)', (u,artID))
+    db.commit()
+
+    # review part still not fully implemented
+
+
+def payments(uname):
+
+    u = uname.get()
+
+    formWindow = tk.Tk()
+    formWindow.title("Payment Form")
+    formWindow.geometry("900x550")
+
+    tk.Label(formWindow, text="Name On Card", width=20, fg='black',
+             font=('Arial', 16, 'bold')).place(x=0, y=50)
+    cname = tk.StringVar(formWindow)
+    tk.Entry(formWindow, textvariable=cname, width=40, fg='black',
+             font=('Arial', 16, 'bold')).place(x=250, y=50)
+
+    tk.Label(formWindow, text="Card No.", width=20, fg='black',
+             font=('Arial', 16, 'bold')).place(x=0, y=120)
+
+    cno = tk.StringVar(formWindow)
+    tk.Entry(formWindow, textvariable=cno, width=40, fg='black',
+             font=('Arial', 16, 'bold')).place(x=250, y=120)
+
+    tk.Label(formWindow, text="Expiry Date", width=20, fg='black',
+             font=('Arial', 16, 'bold')).place(x=0, y=190)
+    expDate = tk.StringVar(formWindow)
+    tk.Entry(formWindow, textvariable=expDate, width=40, fg='black',
+             font=('Arial', 16, 'bold')).place(x=250, y=190)
+
+    tk.Label(formWindow, text="CVV", width=20, fg='black',
+             font=('Arial', 16, 'bold')).place(x=0, y=260)
+    cvv = StringVar(formWindow)
+    tk.Entry(formWindow, textvariable=cvv, width=40, fg='black',
+             font=('Arial', 16, 'bold')).place(x=250, y=260)
+
+    # payment type
+    tk.Label(formWindow, text="Payment Options", width=20, fg='black',
+             font=('Arial', 16, 'bold')).place(x=0, y=345)
+
+    var = IntVar(formWindow)
+
+    tk.Radiobutton(formWindow, text="Artwork payment", indicatoron=0, variable=var, value=1).place(x=250, y=350)
+    tk.Radiobutton(formWindow, text="Exhibition payment", indicatoron=0, variable=var, value=2).place(x=380, y=350)
+
+    # submit
+
+    tk.Button(formWindow, text="Continue",
+              width=10, fg='black', activebackground='#C679A5',activeforeground='white',
+              font=('Arial', 16, 'bold'),
+              command=lambda: [submitform(var, uname, cname, cno, expDate, cvv), formWindow.destroy()]).place(
+        x=380, y=440)
+
+    def submitform(var, uname, cname, cno, expDate, cvv):
+        if var.get() == 1:
+            artPayment(uname, cname, cno, expDate, cvv)
+        elif var.get() == 2:
+            exhPayment(uname, cname, cno, expDate, cvv)
+
+    formWindow.mainloop()
+
+
+def artPayment(uname, cname, cno, expDate, cvv):
+    u = uname.get()
+    c = cname.get()
+    n = cno.get()
+    e = expDate.get()
+    v = cvv.get()
+
+    formWindow = tk.Tk()
+    formWindow.title("Artwork payment")
+    formWindow.geometry("700x400")
+
+    tk.Label(formWindow, text="Artwork's ID", width=20, fg='black',
+             font=('Arial', 16, 'bold')).place(x=0, y=80)
+
+    artID = tk.StringVar(formWindow)
+    tk.Entry(formWindow, textvariable=artID, width=30, fg='black',
+             font=('Arial', 16, 'bold')).place(x=250, y=80)
+
+    tk.Label(formWindow, text="Art Payment's ID", width=20, fg='black',
+             font=('Arial', 16, 'bold')).place(x=0, y=180)
+
+    artPayID = tk.StringVar(formWindow)
+    tk.Entry(formWindow, textvariable=artPayID, width=30, fg='black',
+             font=('Arial', 16, 'bold')).place(x=250, y=180)
+    tk.Button(formWindow, text="submit",
+              width=10, fg='black', activebackground='#79C6AE',activeforeground='white',
+              font=('Arial', 16, 'bold'), command=lambda: confirm()).place(x=300, y=280)
+
+    cur = db.cursor()
+    cur.execute('insert into "ArtPayment" ("username", "NameOnCard", "CardNumber", "ExpireDate", "CVV", "ArtID", "ArtPayID") VALUES(:1, :2, :3, :4, :5, :6, :7)', (u, c, n, e, v, artID, artPayID))
+    db.commit()
+
+
+def exhPayment(uname, cname, cno, expDate, cvv):
+    u = uname.get()
+    c = cname.get()
+    n = cno.get()
+    e = expDate.get()
+    v = cvv.get()
+
+    formWindow = tk.Tk()
+    formWindow.title("Exhibition payment")
+    formWindow.geometry("700x400")
+
+    tk.Label(formWindow, text="Exhibition's ID", width=20, fg='black',
+             font=('Arial', 16, 'bold')).place(x=0, y=80)
+
+    exhID = tk.StringVar(formWindow)
+    tk.Entry(formWindow, textvariable=exhID, width=30, fg='black',
+             font=('Arial', 16, 'bold')).place(x=250, y=80)
+
+    tk.Label(formWindow, text="ExhPayment's ID", width=20, fg='black',
+             font=('Arial', 16, 'bold')).place(x=0, y=180)
+
+    exhPayID = tk.StringVar(formWindow)
+    tk.Entry(formWindow, textvariable=exhPayID, width=30, fg='black',
+             font=('Arial', 16, 'bold')).place(x=250, y=180)
+    tk.Button(formWindow, text="submit",
+              width=10, fg='black', activebackground='#97C679',activeforeground='white',
+              font=('Arial', 16, 'bold'), command=lambda: confirm()).place(x=300, y=280)
+
+    cur = db.cursor()
+    cur.execute('insert into "ExhPayment" ("username", "NameOnCard", "CardNumber", "ExpireDate", "CVV", "ExhID", "ExhPayID") VALUES(:1, :2, :3, :4, :5, :6, :7)', (u, c, n, e, v, exhID, exhPayID))
+    db.commit()
 
 def confirm():
     tk.messagebox.showinfo("message","success!!")
