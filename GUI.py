@@ -246,6 +246,8 @@ def Register():
 
         if flag == True:
             user.delete(0,END)
+            tk.Label(formWindow, text="Invalid User Name", width=50, fg='red',
+                        font=('Arial', 8, 'bold')).place(x=750, y=150)
         else:
             formWindow.destroy()
             if var.get() == 1:
