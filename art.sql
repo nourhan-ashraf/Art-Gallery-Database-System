@@ -6,14 +6,13 @@ CREATE TABLE "Artist" (
 	"phoneNumber" integer UNIQUE NOT NULL,
 	"Email" VARCHAR2(255) UNIQUE NOT NULL,
 	constraint ARTIST_PK PRIMARY KEY ("username")
-	)
+	);
 
-
-CREATE TABLE EXISTS "Customer" (
+CREATE TABLE  "Customer" (
 	"username" CHAR(20) NOT NULL,
 	"firstName" CHAR(20) NOT NULL,
 	"lastName" CHAR(20) NOT NULL,
-	"birthDay" DATE NOT NULL,
+	"birthDay" Varchar(20) NOT NULL,
 	"phoneNumber" integer UNIQUE NOT NULL,
 	"Email" VARCHAR2(255) UNIQUE NOT NULL,
 	constraint CUSTOMER_PK PRIMARY KEY ("username"));
@@ -25,8 +24,8 @@ CREATE TABLE "Exhibitions" (
 	"exposName" CHAR(20) NOT NULL,
 	"location" CHAR(20) NOT NULL,
 	"ticketPrice" INT NOT NULL,
-	"startDate" DATE NOT NULL,
-	"endDate" DATE NOT NULL,
+	"startDate" varchar(255) NOT NULL,
+	"endDate" varchar(255) NOT NULL,
 	"openTime" CHAR(20) NOT NULL,
 	"closeTime" CHAR(20) NOT NULL,
 constraint EXHIBITIONS_PK PRIMARY KEY ("exhibitionID"));
@@ -35,7 +34,7 @@ constraint EXHIBITIONS_PK PRIMARY KEY ("exhibitionID"));
 CREATE TABLE "Artworks" (
 	"artID" INT NOT NULL,
 	"artistName" CHAR(20) NOT NULL,
-	"artworkName" CHAR(20) NOT NULL,
+	"artworkName" varchar2(255) NOT NULL,
 	"information" VARCHAR2(255) NOT NULL,
 	"price" INT NOT NULL,
 	constraint ARTWORKS_PK PRIMARY KEY ("artID"));
@@ -47,7 +46,7 @@ CREATE TABLE "artworkPayment" (
 	"artworkID" NUMBER NOT NULL,
 	"nameOnCard" CHAR(20) NOT NULL,
 	"cardNumber" INT NOT NULL,
-	"expiryDate" DATE NOT NULL,
+	"expiryDate" varchar(20) NOT NULL,
 	"CVV" INT NOT NULL,
 	constraint ARTWORKPAYMENT_PK PRIMARY KEY ("paymentID"));
 
@@ -67,12 +66,12 @@ CREATE TABLE "reviews" (
 
 
 CREATE TABLE "exhibitionsPayment" (
-	"exposPaymentID" INT UNIQUE NOT NULL,
+	"exposPaymentID" INT NOT NULL,
 	"username" CHAR(20) NOT NULL,
 	"exhibitionID" INT NOT NULL,
 	"nameOnCard" CHAR(20) NOT NULL,
 	"cardNumber" INT NOT NULL,
-	"expiryDate" DATE NOT NULL,
+	"expiryDate" varchar(20) NOT NULL,
 	"CVV" INT NOT NULL,
 	constraint EXHIBITIONSPAYMENT_PK PRIMARY KEY ("exposPaymentID"));
 
