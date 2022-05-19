@@ -141,6 +141,19 @@ def view():
         artist_W.geometry("1100x500")
         artist_W.config(bg='#c7b2e9')
         cur = db.cursor()
+        artist_W = tk.Tk()
+        artist_W.geometry("1100x500")
+        cur = db.cursor()
+        main_frame= Frame(artist_W)
+        main_frame.pack(fill=BOTH,expand=1)
+        my_canvas=Canvas(main_frame)
+        my_canvas.pack(side=LEFT,fill=BOTH,expand=1)
+        my_scrollbar=tk.Scrollbar(main_frame,orient=VERTICAL,command=my_canvas.yview)
+        my_scrollbar.pack(side=RIGHT,fill=Y)
+        my_canvas.configure(yscrollcommand=my_scrollbar.set)
+        my_canvas.bind('<Configure>',lambda e: my_canvas.configure(scrollregion=my_canvas.bbox("all")))
+        second_frame= Frame(my_canvas)
+        my_canvas.create_window((0,0),window=second_frame, anchor="nw")
         cur.execute('select * from '+T )
         var = cur.fetchall() #return list of tuples
         if(len(var) > 0):
@@ -148,7 +161,7 @@ def view():
             totalrows = len(var)
             for i in range(totalrows):
                 for j in range(totalcolums):
-                    v = tk.Entry(artist_W, width=20,
+                    v = tk.Entry(second_frame, width=20,
                                 #bg='#3F5955',
                                 #fg='#0F242E',
                                 borderwidth=2,
