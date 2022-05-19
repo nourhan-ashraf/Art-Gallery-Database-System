@@ -142,7 +142,7 @@ def view():
 
         cur = db.cursor()
         cur.execute('select * from '+T )
-        var = cur.fetchall() #return list of tuples 
+        var = cur.fetchall() #return list of tuples
         if(len(var) > 0):
             totalcolums = len(var[0])
             totalrows = len(var)
@@ -206,13 +206,15 @@ def Register():
     #Birthday
     tk.Label(formWindow, text="Birthday", width=20, fg='black',
             font=('Arial', 16, 'bold')).place(x=0, y=300)
+
+    global cal
     cal = Calendar(formWindow, selectmode = 'day',
                year = 2022, month = 5,
                day = 1)
 
     cal.place(x=250, y=300)
 
-    date=cal.get_date()
+
 
     #user type
     tk.Label(formWindow, text="User", width=20, fg='black',
@@ -228,9 +230,9 @@ def Register():
 
     tk.Button(formWindow, text="submit",
                  width=10, fg='black',
-                 font=('Arial', 16, 'bold'), command=lambda: [submitform(var,uname,fname,lname,phone,email,date, user)]).place(x=450, y=650)
+                 font=('Arial', 16, 'bold'), command=lambda: [submitform(var,uname,fname,lname,phone,email, user)]).place(x=450, y=650)
 
-    def submitform(var,uname,fname,lname,phone,email,date, user):
+    def submitform(var,uname,fname,lname,phone,email, user):
 
         u=uname.get()
 
@@ -253,7 +255,7 @@ def Register():
             if var.get() == 1:
                 artist(uname,fname,lname,phone,email)
             elif var.get() == 2:
-                customer(uname,fname,lname,phone,email,date)
+                customer(uname,fname,lname,phone,email)
 
     formWindow.mainloop()
 
@@ -369,12 +371,12 @@ def artist(uname,fname,lname,phone,email):
         #startDate
         tk.Label(formWindow, text="Start Date", width=20, fg='black',
                 font=('Arial', 16, 'bold')).place(x=0, y=200)
+        global sd
         sd = Calendar(formWindow, selectmode = 'day',
                    year = 2022, month = 5,
                    day = 1)
         sd.place(x=250, y=200)
 
-        s_date=sd.get_date()
 
 
 
@@ -382,12 +384,11 @@ def artist(uname,fname,lname,phone,email):
         tk.Label(formWindow, text="End Date", width=20, fg='black',
                 font=('Arial', 16, 'bold')).place(x=0, y=400)
 
+        global ed
         ed = Calendar(formWindow, selectmode = 'day',
                    year = 2022, month = 5,
                    day = 1)
         ed.place(x=250, y=400)
-
-        e_date=sd.get_date()
 
         #openTime
         tk.Label(formWindow, text="Open Time", width=20, fg='black',
@@ -407,9 +408,9 @@ def artist(uname,fname,lname,phone,email):
 
         tk.Button(formWindow, text="submit",
                         width=10, fg='black',
-                        font=('Arial', 16, 'bold'), command=lambda:[submitexpos(ex_Name, u, location, tprice, s_date, e_date, open, close),confirm(),formWindow.destroy()]).place(x=350, y=700)
+                        font=('Arial', 16, 'bold'), command=lambda:[submitexpos(ex_Name, u, location, tprice, open, close),confirm(),formWindow.destroy()]).place(x=350, y=700)
 
-        def submitexpos(ex_Name, u, location, tprice, s_date, e_date, open, close):
+        def submitexpos(ex_Name, u, location, tprice, open, close):
             cur = db.cursor()
             cur.execute('select * from "Exhibitions"')
             var = cur.fetchall()
@@ -422,7 +423,7 @@ def artist(uname,fname,lname,phone,email):
             c=close.get()
 
 
-            cur.execute('insert into "Exhibitions" ("exhibitionID", "artistName", "exposName", "location", "ticketPrice", "startDate", "endDate", "openTime", "closeTime") VALUES(:1, :2, :3, :4, :5, :6, :7, :8, :9)', (ex_id, u, n, l, t, s_date, e_date, o, c))
+            cur.execute('insert into "Exhibitions" ("exhibitionID", "artistName", "exposName", "location", "ticketPrice", "startDate", "endDate", "openTime", "closeTime") VALUES(:1, :2, :3, :4, :5, :6, :7, :8, :9)', (ex_id, u, n, l, t, sd.get_date(), ed.get_date(), o, c))
             db.commit()
 
 
@@ -430,17 +431,17 @@ def artist(uname,fname,lname,phone,email):
 
 
 
-def customer(uname, fname, lname, phone, email, date):
+def customer(uname, fname, lname, phone, email):
 
     u=uname.get()
     f=fname.get()
     l=lname.get()
     p=phone.get()
     e=email.get()
-    print("Date: "+date)
-    print(type(date))
+
+    
     cur = db.cursor()
-    cur.execute('insert into "Customer" ("username", "firstName", "lastName", "birthDay", "phoneNumber", "Email") VALUES(:1, :2, :3, :4, :5, :6)', (u, f, l, date, p, e))
+    cur.execute('insert into "Customer" ("username", "firstName", "lastName", "birthDay", "phoneNumber", "Email") VALUES(:1, :2, :3, :4, :5, :6)', (u, f, l, cal.get_date(), p, e))
     db.commit()
 
 
@@ -642,6 +643,42 @@ def customer(uname, fname, lname, phone, email, date):
 
 
         formWindow.mainloop()
+
+    """def likes(u):
+        formWindow = tk.Tk()
+        formWindow.title("likes")
+        formWindow.geometry("1100x950")
+
+
+        #artID
+        tk.Label(formWindow, text="Art ID", width=20, fg='black',
+                font=('Arial', 16, 'bold')).place(x=0, y=0)
+        artID = tk.StringVar(formWindow)
+        tk.Entry(formWindow,textvariable=artID,width=20, fg='black',
+                font=('Arial', 16, 'bold')).place(x=250, y=0)
+
+        #like
+        var = IntVar(formWindow)
+
+        tk.Radiobutton(formWindow, text="like",indicatoron=0, variable=var, value=1).place(x=250, y=200)
+
+
+
+
+        tk.Button(formWindow, text="submit",
+                        width=10, fg='black',
+                        font=('Arial', 16, 'bold'), command=lambda: [submit_like(artID, u, var), confirm(), formWindow.destroy()]).place(x=350, y=400)
+
+        def submit_like(artID, u, var):
+
+            i=artID.get()
+            if(var.get() == 1):
+                cur = db.cursor()
+                cur.execute('insert into "likes" ("artID", "username", "likesNo.") VALUES(:1, :2, :3)', (i, u, l))
+                db.commit()
+
+
+        formWindow.mainloop()"""
 
 
 
