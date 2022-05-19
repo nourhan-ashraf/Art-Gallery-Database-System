@@ -43,7 +43,7 @@ CREATE TABLE "Artworks" (
 CREATE TABLE "artworkPayment" (
 	"paymentID" INT NOT NULL,
 	"username" CHAR(20) NOT NULL,
-	"artworkID" NUMBER NOT NULL,
+	"artworkID" INT NOT NULL,
 	"nameOnCard" CHAR(20) NOT NULL,
 	"cardNumber" INT NOT NULL,
 	"expiryDate" varchar(20) NOT NULL,
@@ -76,6 +76,19 @@ CREATE TABLE "exhibitionsPayment" (
 	constraint EXHIBITIONSPAYMENT_PK PRIMARY KEY ("exposPaymentID"));
 
 
+CREATE TABLE "Painting" (
+	"artID" INT NOT NULL,
+	"type" VARCHAR(20) NOT NULL,
+	"style" VARCHAR(20) NOT NULL);
+
+
+
+CREATE TABLE "Photography" (
+	"artID" INT NOT NULL,
+	"width" INT NOT NULL,
+	"length" INT NOT NULL);
+
+
 
 ALTER TABLE "Exhibitions" ADD CONSTRAINT "Exhibitions_fk0" FOREIGN KEY ("artistName") REFERENCES "Artist"("username");
 
@@ -89,6 +102,9 @@ ALTER TABLE "likes" ADD CONSTRAINT "likes_fk1" FOREIGN KEY ("artID") REFERENCES 
 ALTER TABLE "reviews" ADD CONSTRAINT "reviews_fk0" FOREIGN KEY ("username") REFERENCES "Customer"("username");
 ALTER TABLE "reviews" ADD CONSTRAINT "reviews_fk1" FOREIGN KEY ("artID") REFERENCES "Artworks"("artID");
 
-ALTER TABLE "exhibitionsPayment" ADD CONSTRAINT "exhibitionsPayment_fk0" FOREIGN KEY ("username") REFERENCES "Customer"("username");
-ALTER TABLE "exhibitionsPayment" ADD CONSTRAINT "exhibitionsPayment_fk1" FOREIGN KEY ("exhibitionID") REFERENCES "Exhibitions"("exhibitionID");
+ALTER TABLE "Painting" ADD CONSTRAINT "Painting_fk0" FOREIGN KEY ("artID") REFERENCES "Artworks"("artID");
 
+ALTER TABLE "Photography" ADD CONSTRAINT "Photography_fk0" FOREIGN KEY ("artID") REFERENCES "Artworks"("artID");
+
+ALTER TABLE "likes" ADD CONSTRAINT "likes_fk1" FOREIGN KEY ("artID") REFERENCES "Artworks"("artID");
+ALTER TABLE "likes" ADD CONSTRAINT "likes_fk1" FOREIGN KEY ("artID") REFERENCES "Artworks"("artID");
